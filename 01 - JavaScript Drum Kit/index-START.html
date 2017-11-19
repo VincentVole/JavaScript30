@@ -64,7 +64,8 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  var record = false;
+  var recording = false;
+  var playing = false;
   var track = [];
 
   function playSound(e){
@@ -74,7 +75,7 @@
       return;
     }
 
-    if(record){
+    if(recording){
       if(track.length == 0){
         track.push([e.keyCode, new Date().getTime()]);
       }
@@ -95,7 +96,7 @@
     this.classList.remove('playing');
   }
 
-  function replaySound(keyCode){
+  function replaySound(keyCode, end){
     const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
     const key = document.querySelector(`.key[data-key="${keyCode}"]`);
     if(!audio){
@@ -103,9 +104,16 @@
     }
     audio.currentTime = 0;
     audio.play();
-  }
 
-  
+    if(end){
+      audio.onended = (e) => {
+        thisPlayer = e.srcElement;
+        const playBtn = document.querySelector('#play');
+        playBtn.classList.remove('inPlayback');
+        thisPlayer.onended = null;
+      }
+    } 
+  }
 
   window.addEventListener('keydown', playSound);
 
@@ -118,27 +126,45 @@
   const playBtn = document.querySelector('#play');
 
   recordBtn.addEventListener('click', () => {
-    if(!record){
-      record = true;
+    if(!recording){
+      recording = true;
       track = [];
+      recordBtn.classList.add('recording');
     }
     else{
-      record = false;
+      recording = false;
+      recordBtn.classList.remove('recording');
     }
   });
 
   playBtn.addEventListener('click', () => {
-    replaySound(track[0][0]);
-    var i = 0;
-    if(track.length > 1){
-      function trackLoop(){
-        i++;
-        if(i < track.length){
-          replaySound(track[i][0]);
-          setTimeout(trackLoop, track[i][2]);
-        }
+    if(track.length > 0){
+      if(!playing){
+        playing = true;
+        playBtn.classList.add('inPlayback');
+        replaySound(track[0][0]);
       }
-      setTimeout(trackLoop, track[0][2]);
+      else{
+        playing = false;
+        playBtn.classList.remove('inPlayback');
+      }
+
+      var i = 0;
+      if(track.length > 1){
+        function trackLoop(){
+          i++;
+          if(i < track.length && playing){
+            if(i == track.length - 1){
+              replaySound(track[i][0], true);
+            }
+            else{
+              replaySound(track[i][0], false);
+            }
+            setTimeout(trackLoop, track[i][2]);
+          }
+        }
+        setTimeout(trackLoop, track[0][2]);
+      }
     }
   });
 

@@ -49,9 +49,15 @@ kbd {
   color: #ffc600;
 }
 
-#record {
+#record, #play {
   cursor: pointer;
 }
+
+.recording, .inPlayback {
+  border-color: #c13e01;
+  box-shadow: 0 0 1rem #c13e01;
+}
+
 
 
 
