@@ -64,11 +64,11 @@
       top:50%;
       transform-origin: 100%;
       transform: rotate(90deg);
-      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     }
 
     .tick {
       transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     }
 
   </style>
@@ -83,13 +83,42 @@
       const min = now.getMinutes();
       const hr = now.getHours();
 
-      if(seconds == 40){
+      if(seconds == 0){
         secondHand.style.transform = `rotate(${(360) + 90}deg)`;
-        secondHand.style.transition.remove();
+        secondHand.classList.remove('tick');
+        secondHand.style.transform = 'rotate(90deg)';
+      }
+      else if(seconds == 1){
+        secondHand.classList.add('tick');
+        secondHand.style.transform = `rotate(${(seconds*6) + 90}deg)`;
       }
       else{
         secondHand.style.transform = `rotate(${(seconds*6) + 90}deg)`;
+      }
+
+      if(min == 0){
+        minHand.style.transform = `rotate(${(360) + 90}deg)`;
+        minHand.classList.remove('tick');
+        minHand.style.transform = 'rotate(90deg)';
+      }
+      else if(min == 1){
+        minHand.classList.add('tick');
         minHand.style.transform = `rotate(${(min*6) + 90}deg)`;
+      }
+      else{
+        minHand.style.transform = `rotate(${(min*6) + 90}deg)`;
+      }
+
+      if(hr == 0){
+        hrHand.style.transform = `rotate(${(720) + 90}deg)`;
+        hrHand.classList.remove('tick');
+        hrHand.style.transform = 'rotate(90deg)';
+      }
+      else if(hr == 1){
+        hrHand.classList.add('tick');
+        hrHand.style.transform = `rotate(${(hr*30) + 90}deg)`;
+      }
+      else{
         hrHand.style.transform = `rotate(${(hr*30) + 90}deg)`;
       }
     }
