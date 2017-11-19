@@ -45,6 +45,12 @@
       <kbd>L</kbd>
       <span class="sound">tink</span>
     </div>
+    <div class="key" id="record">
+      <span>record</span>
+    </div>
+    <div class="key" id="play">
+      <span>play</span>
+    </div>
   </div>
 
   <audio data-key="65" src="sounds/clap.wav"></audio>
@@ -58,7 +64,34 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function playSound(e){
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if(!audio){
+      return;
+    }
+    audio.currentTime = 0;
+    audio.play();
+    key.classList.add('playing');
+  }
 
+  function removeTransition(e){
+    if(e.propertyName !== 'transform') return;//skip if not transform
+    this.classList.remove('playing');
+
+    console.log(e);
+  }
+
+  window.addEventListener('keydown', playSound);
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => {
+    key.addEventListener('transitionend', removeTransition);
+  });
+
+  var record = false;
+  const recordBtn = document.querySelector('#record');
+  recordBtn.addEventListener('click', () => console.log('asdfsa'))
 </script>
 
 
