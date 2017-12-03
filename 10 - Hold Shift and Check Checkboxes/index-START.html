@@ -99,6 +99,79 @@
   </div>
 
 <script>
+  var boxes = Array.from(document.querySelectorAll('.item input'));
+  console.log(boxes);
+
+  var shiftDown = false;
+  var lastChecked = null;
+
+  function shiftCheckDown(e){
+    if(e.keyCode == 16){
+      shiftDown = true;
+    }
+  }
+  function shiftCheckUp(e){
+    if(e.keyCode == 16){
+      shiftDown = false;
+    }
+  }
+  function checked(box){
+    if(this.checked){
+      if((lastChecked || lastChecked == 0) && shiftDown){
+        console.log('hello')
+        var max = Math.max(lastChecked, boxes.indexOf(this));
+        var min = Math.min(lastChecked, boxes.indexOf(this));
+        for(var i = min; i < max; i++){
+          boxes[i].checked = true;
+        }
+      }
+      lastChecked = boxes.indexOf(this);
+    }
+  }
+
+  document.addEventListener('keydown', shiftCheckDown);
+  document.addEventListener('keyup', shiftCheckUp);
+
+  boxes.forEach((item)=>{
+    item.addEventListener('change', checked);
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
