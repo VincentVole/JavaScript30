@@ -115,7 +115,8 @@
       shiftDown = false;
     }
   }
-  function checked(box){
+  function checked(e){
+    console.log(e);
     if(this.checked){
       if((lastChecked || lastChecked == 0) && shiftDown){
         console.log('hello')
@@ -133,7 +134,7 @@
   document.addEventListener('keyup', shiftCheckUp);
 
   boxes.forEach((item)=>{
-    item.addEventListener('change', checked);
+    item.addEventListener('click', checked);
   });
 
 
